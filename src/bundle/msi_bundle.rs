@@ -239,6 +239,7 @@ fn create_property_table(
 // the resource files that should be included in the package.
 fn collect_resource_info(settings: &Settings) -> crate::Result<Vec<ResourceInfo>> {
     let mut resources = Vec::<ResourceInfo>::new();
+    println!("settings.binary_path(): {:?}", settings.binary_path());
     resources.push(ResourceInfo {
         source_path: settings.binary_path().to_path_buf(),
         dest_path: PathBuf::from(settings.binary_name()),
@@ -248,11 +249,17 @@ fn collect_resource_info(settings: &Settings) -> crate::Result<Vec<ResourceInfo>
     });
     let root_rsrc_dir = PathBuf::from("Resources");
     for source_path in settings.resource_files() {
+        println!("aaa");
+        println!("source_path: {:?}", source_path);
         let source_path = source_path?;
+        println!("metadata: {:?}", source_path.metadata());
         let metadata = source_path.metadata()?;
         let size = metadata.len();
+        println!("size: {}", size);
         let dest_path = root_rsrc_dir.join(common::resource_relpath(&source_path));
+        println!("dest_path: {:?}", dest_path);
         let filename = dest_path.file_name().unwrap().to_string_lossy().to_string();
+        println!("filename: {}", filename);
         let info = ResourceInfo {
             source_path,
             dest_path,
